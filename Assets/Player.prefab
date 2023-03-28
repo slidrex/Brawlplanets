@@ -168,8 +168,13 @@ MonoBehaviour:
   controller: {fileID: 1740406772624345578}
   holder: {fileID: 5187502910775960567, guid: c5094350e2d08f64dbce09fb263b4618, type: 3}
   projectile: {fileID: 8507376548259237497, guid: fca2d41ea8bf46f4fb923134d246f51e, type: 3}
+  followCanvas: {fileID: 6958512162069544765, guid: edd120f2392c5e14a8aa7f16e4c4f3e8, type: 3}
+  FollowCanvas: {fileID: 0}
   maxChargeCount: 3
   chargeRestoreTime: 1.6
+  maxHealth: 500
+  Nickname: 
+  <CurrentHealth>k__BackingField: 0
 --- !u!114 &1740406772624345578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,9 +190,10 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
-  InputWay: 1
+  InputWay: 0
   controller: {fileID: 6714526699937922132}
   entity: {fileID: 6714526699937922135}
+  MovementSpeed: 1.3
 --- !u!210 &8066459955192451640
 SortingGroup:
   m_ObjectHideFlags: 0

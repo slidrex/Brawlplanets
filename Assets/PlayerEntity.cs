@@ -7,18 +7,76 @@ public class PlayerEntity : NetworkBehaviour
     [SerializeField] private UIHolder holder;
     public UIHolder UIHolder { get; private set; }
     [SerializeField] private Projectile projectile;
+    [SerializeField] private FollowCanvas followCanvas;
+    public FollowCanvas FollowCanvas;
     private const float projectileInterval = 0.6f;
     [SerializeField] private int maxChargeCount;
     [SerializeField] private float chargeRestoreTime;
     private float timeSinceChargeRestored;
     private int currentChargeCount;
     private float timeSinceProjectile;
+    [SerializeField] private int maxHealth;
+    [SyncVar] public string Nickname;
+    [field:SerializeField, SyncVar] public int CurrentHealth { get; private set; }
+    private string[] nicknames = new string[]
+    {
+        "Fox5",
+        "Mishka",
+        "robot236",
+        "ubiyca_porazheniy",
+        "killer_laro",
+        "saga_o_lirexe",
+        "wolk",
+        "limon_mikrofon"
+    };
     public override void OnStartLocalPlayer()
     {
+        SetCurrentHealthCmd(gameObject, maxHealth);
+        CmdSetNickname(gameObject, nicknames[Random.Range(0, nicknames.Length)]);
+        
+        
         UIHolder = Instantiate(holder, Vector3.zero, Quaternion.Euler(20.0f, 0.0f, 0.0f));
         UIHolder.Camera.FollowObject = transform;
-        DontDestroyOnLoad(gameObject);
-        DontDestroyOnLoad(UIHolder.Camera.FollowObject.gameObject);
+        
+        CmdSpawnCanvas(transform.position, gameObject);
+        UIHolder.FollowCanvas = FollowCanvas;
+        
+    }
+    protected virtual void Start()
+    {
+        print("global start");
+        int delayedAction;
+        StartCoroutine(DelayedAction());
+    }
+    private System.Collections.IEnumerator DelayedAction()
+    {
+        yield return new WaitForSeconds(0.2f);
+        if(!isLocalPlayer)
+        {
+            FollowCanvas.SetupCanvas(true);
+        }
+        else FollowCanvas.SetupCanvas(false);
+        FollowCanvas.SetNickname(Nickname);
+    }
+    [Command]
+    private void SetCurrentHealthCmd(GameObject player, int maxHealth)
+    {
+        player.GetComponent<PlayerEntity>().CurrentHealth = maxHealth;
+    }
+    [Command]
+    private void CmdSetNickname(GameObject player, string nickname)
+    {
+        player.GetComponent<PlayerEntity>().Nickname = nickname;
+    }
+    [Command]
+    private void CmdSpawnCanvas(Vector3 position, GameObject playerObject) 
+    {
+        FollowCanvas obj = Instantiate(followCanvas.gameObject).GetComponent<FollowCanvas>();
+        PlayerEntity player = playerObject.GetComponent<PlayerEntity>();
+        
+        obj.FollowObject = playerObject.transform;
+        
+        NetworkServer.Spawn(obj.gameObject, gameObject);
     }
     private void Update()
     {
@@ -67,10 +125,32 @@ public class PlayerEntity : NetworkBehaviour
         if(!isLocalPlayer) return;
         if(timeSinceProjectile < projectileInterval) timeSinceProjectile += Time.fixedDeltaTime;
     }
+    public void Damage(int damage)
+    {
+        if(CurrentHealth - damage <= 0) OnDie();
+        else CurrentHealth -= damage;
+        
+        FollowCanvas.CmdUpdateHealthbar(gameObject, CurrentHealth, maxHealth);
+    }
+    [Command]
+    public void ReloadScene()
+    {
+        PlayerEntity[] players = FindObjectsOfType<PlayerEntity>();
+        foreach(PlayerEntity player in players)
+        {
+            player.CurrentHealth = player.maxHealth;
+            RpcUpdateCanvas(player.gameObject);
+        }
+    }
+    private void RpcUpdateCanvas(GameObject player)
+    {
+        player.GetComponent<PlayerEntity>().FollowCanvas.CmdUpdateHealthbar(player.GetComponent<PlayerEntity>().gameObject, CurrentHealth, maxHealth);
+    }
     public virtual void OnDie()
     {
         controller.enabled = false;
         transform.position = new Vector3(Random.Range(-3.0f, 3.0f), 0.0f, Random.Range(-3.0f, 3.0f));
         controller.enabled = true;
+        ReloadScene();
     }
 }

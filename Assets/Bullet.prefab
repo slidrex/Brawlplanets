@@ -146,7 +146,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
-  speed: 3
+  speed: 6
   lifeTime: 5
   MoveVector: {x: 0, y: 0, z: 0}
   Owner: {fileID: 0}

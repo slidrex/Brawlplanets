@@ -26,7 +26,7 @@ public class Projectile : NetworkBehaviour
             if(entity == Owner) return;
             else
             {
-                entity.OnDie();
+                entity.Damage(50);
             }
         }
         Destroy(gameObject);

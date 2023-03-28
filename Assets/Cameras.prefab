@@ -510,14 +510,14 @@ MonoBehaviour:
   m_XAxis:
     Value: 0
     m_SpeedMode: 0
-    m_MaxSpeed: 30
-    m_AccelTime: 0.1
-    m_DecelTime: 0.1
+    m_MaxSpeed: 0
+    m_AccelTime: 0
+    m_DecelTime: 0
     m_InputAxisName: Mouse X
     m_InputAxisValue: 0
     m_InvertInput: 1
-    m_MinValue: -10
-    m_MaxValue: 10
+    m_MinValue: 0
+    m_MaxValue: 0
     m_Wrap: 0
     m_Recentering:
       m_enabled: 0
