@@ -170,10 +170,12 @@ MonoBehaviour:
   projectile: {fileID: 8507376548259237497, guid: fca2d41ea8bf46f4fb923134d246f51e, type: 3}
   followCanvas: {fileID: 6958512162069544765, guid: edd120f2392c5e14a8aa7f16e4c4f3e8, type: 3}
   FollowCanvas: {fileID: 0}
+  projectileInterval: 0.2
   maxChargeCount: 3
-  chargeRestoreTime: 1.6
-  maxHealth: 500
+  chargeRestoreTime: 0.6
+  chargePenaltyTime: 0.5
   Nickname: 
+  <MaxHealth>k__BackingField: 400
   <CurrentHealth>k__BackingField: 0
 --- !u!114 &1740406772624345578
 MonoBehaviour:

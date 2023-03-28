@@ -6,15 +6,13 @@ public class FollowCanvas : NetworkBehaviour
 {
     [SyncVar] public Transform FollowObject;
     [SerializeField] private Transform ElementsHolder;
-    [SerializeField] public Image healthBar;
+    [SerializeField] private Text chargeCount;
+    public Image healthBar;
+    public Text healthText;
     [SerializeField] private Text nickname;
     private System.Collections.Generic.List<RectTransform> elements = new System.Collections.Generic.List<RectTransform>();
     private bool _IsEnemy;
-    public void SetNickname(string name)
-    {
-        nickname.text = name;
-        int healthbar;
-    }
+    public void SetNickname(string name) => nickname.text = name;
     private void Start()
     {
         FollowObject.GetComponent<PlayerEntity>().FollowCanvas = this;
@@ -22,8 +20,16 @@ public class FollowCanvas : NetworkBehaviour
     private void Update()
     {
         Vector3 offset = Vector3.up * 1.6f + Vector3.forward;
-        if( FollowObject != null && transform.position != FollowObject.transform.position + offset)
+        if(FollowObject != null && transform.position != FollowObject.transform.position + offset)
             transform.position = FollowObject.transform.position + offset;
+    }
+    public void ShowChargeCount()
+    {
+        chargeCount.gameObject.SetActive(true);
+    }
+    public void SetChargeCount(int count)
+    {
+        chargeCount.text = count.ToString();
     }
     public void SetupCanvas(bool isEnemy)
     {
@@ -35,8 +41,8 @@ public class FollowCanvas : NetworkBehaviour
         }
         else
         {
-            healthBar.color = Color.green;
-            nickname.color = Color.green;
+            healthBar.color = new Color(0.0f, 0.6f, 1.0f);
+            nickname.color = new Color(0.0f, 0.6f, 1.0f);
         }
     }
     [Command]
@@ -44,7 +50,9 @@ public class FollowCanvas : NetworkBehaviour
     [ClientRpc]
     private void RpcUpdateHealthBar(GameObject player, int currentHealth, int maxHealth)
     {
-        player.GetComponent<PlayerEntity>().FollowCanvas.healthBar.fillAmount = currentHealth/(float)maxHealth;
+        FollowCanvas canvas = player.GetComponent<PlayerEntity>().FollowCanvas.GetComponent<FollowCanvas>();
+        canvas.healthBar.fillAmount = currentHealth/(float)maxHealth;
+        canvas.healthText.text = currentHealth.ToString();
     }
     public void CommitRemovedElements()
     {

@@ -5,8 +5,8 @@ public class Projectile : NetworkBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float lifeTime;
-    [HideInInspector] public Vector3 MoveVector;
-    [HideInInspector] public PlayerEntity Owner;
+    [SyncVar, HideInInspector] public Vector3 MoveVector;
+    [SyncVar, HideInInspector] public uint Owner;
     private Transform Transform;
     private float timeSinceSpawn;
     protected virtual void Start()
@@ -23,7 +23,7 @@ public class Projectile : NetworkBehaviour
     {
         if(collider.TryGetComponent<PlayerEntity>(out PlayerEntity entity))
         {
-            if(entity == Owner) return;
+            if(entity.netId == Owner) return;
             else
             {
                 entity.Damage(50);
