@@ -329,7 +329,8 @@ GameObject:
   - component: {fileID: 5321984941256836247}
   - component: {fileID: 3359763154197166619}
   - component: {fileID: -1245666148970921042}
-  - component: {fileID: 5119612913590375243}
+  - component: {fileID: 8303270247244557423}
+  - component: {fileID: 3820125951823390552}
   m_Layer: 0
   m_Name: L
   m_TagString: Untagged
@@ -346,7 +347,7 @@ Transform:
   m_GameObject: {fileID: 4297024323500449937}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2321738311186315627}
   m_Father: {fileID: 0}
@@ -413,8 +414,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 4169961669600014810}
   m_AABB:
-    m_Center: {x: 0.0000000018626451, y: -0.0077241836, z: 0.0038484596}
-    m_Extent: {x: 0.014408792, y: 0.021279115, z: 0.010067886}
+    m_Center: {x: 0.0000000018626451, y: -0.0077241845, z: 0.0027632737}
+    m_Extent: {x: 0.014408792, y: 0.021279115, z: 0.011153072}
   m_DirtyAABB: 0
 --- !u!114 &1748628841353720632
 MonoBehaviour:
@@ -573,20 +574,35 @@ MonoBehaviour:
   syncInterval: 0.1
   clientAuthority: 0
   animator: {fileID: 3359763154197166619}
---- !u!136 &5119612913590375243
-CapsuleCollider:
+--- !u!54 &8303270247244557423
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4297024323500449937}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
+--- !u!65 &3820125951823390552
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4297024323500449937}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 1.3301939
-  m_Height: 4.2558236
-  m_Direction: 1
-  m_Center: {x: 0.08065641, y: 0.80123633, z: 0.5555076}
+  serializedVersion: 2
+  m_Size: {x: 2.8817585, y: 4.2558227, z: 2.2306156}
+  m_Center: {x: 0.0019481357, y: 0.8012364, z: 0.09625316}
 --- !u!1 &4498462645218253493
 GameObject:
   m_ObjectHideFlags: 0
