@@ -329,6 +329,7 @@ GameObject:
   - component: {fileID: 5321984941256836247}
   - component: {fileID: 3359763154197166619}
   - component: {fileID: -1245666148970921042}
+  - component: {fileID: 5119612913590375243}
   m_Layer: 0
   m_Name: L
   m_TagString: Untagged
@@ -434,7 +435,7 @@ MonoBehaviour:
   animator: {fileID: 3359763154197166619}
   controller: {fileID: 1748628841353720634}
   entity: {fileID: 140319562423609224}
-  MovementSpeed: 1.3
+  MovementSpeed: 3.6
 --- !u!210 &1748628841353720633
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -457,10 +458,10 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 3.9
-  m_Radius: 0.75
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_Height: 0
+  m_Radius: 0
+  m_SlopeLimit: 0
+  m_StepOffset: 0
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.6, z: 0}
@@ -484,10 +485,12 @@ MonoBehaviour:
   projectile: {fileID: 4466285693135321192, guid: 1d1fa291118cea0459895fbf29ba696e, type: 3}
   followCanvas: {fileID: 6958512162069544765, guid: edd120f2392c5e14a8aa7f16e4c4f3e8, type: 3}
   FollowCanvas: {fileID: 6958512162069544765, guid: edd120f2392c5e14a8aa7f16e4c4f3e8, type: 3}
+  projectileInterval: 0.3
   maxChargeCount: 3
-  chargeRestoreTime: 1.6
-  maxHealth: 500
+  chargeRestoreTime: 0.7
+  chargePenaltyTime: 0.4
   Nickname: 
+  <MaxHealth>k__BackingField: 400
   <CurrentHealth>k__BackingField: 0
 --- !u!114 &4411889429961025247
 MonoBehaviour:
@@ -570,6 +573,20 @@ MonoBehaviour:
   syncInterval: 0.1
   clientAuthority: 0
   animator: {fileID: 3359763154197166619}
+--- !u!136 &5119612913590375243
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4297024323500449937}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 1.3301939
+  m_Height: 4.2558236
+  m_Direction: 1
+  m_Center: {x: 0.08065641, y: 0.80123633, z: 0.5555076}
 --- !u!1 &4498462645218253493
 GameObject:
   m_ObjectHideFlags: 0

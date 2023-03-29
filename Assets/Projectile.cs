@@ -21,6 +21,7 @@ public class Projectile : NetworkBehaviour
     }
     protected virtual void OnTriggerEnter(Collider collider)
     {
+        print("collision!");
         if(collider.TryGetComponent<PlayerEntity>(out PlayerEntity entity))
         {
             if(entity.netId == Owner) return;

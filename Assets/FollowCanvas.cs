@@ -19,7 +19,7 @@ public class FollowCanvas : NetworkBehaviour
     }
     private void Update()
     {
-        Vector3 offset = Vector3.up * 1.6f + Vector3.forward;
+        Vector3 offset = Vector3.up * 3.3f + Vector3.forward;
         if(FollowObject != null && transform.position != FollowObject.transform.position + offset)
             transform.position = FollowObject.transform.position + offset;
     }
