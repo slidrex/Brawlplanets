@@ -13,9 +13,20 @@ public class FollowCanvas : NetworkBehaviour
     private System.Collections.Generic.List<RectTransform> elements = new System.Collections.Generic.List<RectTransform>();
     private bool _IsEnemy;
     public void SetNickname(string name) => nickname.text = name;
+    [Command]
+    public void OnCanvasCreated() => UpdatePlayersCanvases();
+    [ClientRpc]
+    private void UpdatePlayersCanvases()
+    {
+        PlayerEntity[] players = FindObjectsOfType<PlayerEntity>();
+        foreach(PlayerEntity player in players)
+        {
+            player.SetupLocalCanvases();
+        }
+    }
     private void Start()
     {
-        FollowObject.GetComponent<PlayerEntity>().FollowCanvas = this;
+        OnCanvasCreated();
     }
     private void Update()
     {

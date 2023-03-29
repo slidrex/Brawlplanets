@@ -24,15 +24,6 @@ public class PlayerEntity : NetworkBehaviour
     {
         SetupLocalPlayer();
     }
-    protected virtual void Start()
-    {
-        StartCoroutine(SetupLocalCanvasesAsync());
-    }
-    private System.Collections.IEnumerator SetupLocalCanvasesAsync()
-    {
-        yield return new WaitForSeconds(1);
-        SetupLocalCanvases();
-    }
     protected virtual void FixedUpdate()
     {
         if(!isLocalPlayer) return;
@@ -86,7 +77,7 @@ public class PlayerEntity : NetworkBehaviour
         CmdSpawnCanvas(gameObject);
         UIHolder.FollowCanvas = FollowCanvas;
     }
-    private void SetupLocalCanvases()
+    public void SetupLocalCanvases()
     {
         if(!isLocalPlayer)
         {
