@@ -19,10 +19,11 @@ public static class GameLevelController
         "govno_govna",
         "pirozhok_s_govnom"
     };
+    public static PlayerEntity[] GetAllLevelPlayers() => MonoBehaviour.FindObjectsOfType<PlayerEntity>();
     [Command]
     public static void ReloadScene()
     {
-        PlayerEntity[] players = MonoBehaviour.FindObjectsOfType<PlayerEntity>();
+        PlayerEntity[] players = GetAllLevelPlayers();
         foreach(PlayerEntity player in players) player.OnGameLoad();
     }
 }

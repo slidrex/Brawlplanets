@@ -491,6 +491,7 @@ MonoBehaviour:
   chargeRestoreTime: 0.7
   chargePenaltyTime: 0.4
   Nickname: 
+  ultimateRestoreSpeed: 5
   <MaxHealth>k__BackingField: 400
   <CurrentHealth>k__BackingField: 0
 --- !u!114 &4411889429961025247

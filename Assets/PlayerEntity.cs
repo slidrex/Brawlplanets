@@ -18,11 +18,20 @@ public class PlayerEntity : NetworkBehaviour
     [SerializeField] private float chargePenaltyTime = 0.3f;
     private float timeSinceShootAction;
     [SyncVar] public string Nickname;
+    [SyncVar] private float ultimateStatus;
+    public float UltimateStatus { get => ultimateStatus; set => ultimateStatus = value; }
+    private const float UltimateTreshold = 100.0f;
+    [SerializeField] private float ultimateRestoreSpeed;
     [field:SerializeField, SyncVar] public int MaxHealth { get; private set; }
     [field:SerializeField, SyncVar] public int CurrentHealth { get; private set; }
     public override void OnStartLocalPlayer()
     {
         SetupLocalPlayer();
+        UIHolder.UltimateJoystick.OnUltimateRelease += OnUltimateJoystickReleased;
+    }
+    private void Start()
+    {
+        print("start");
     }
     protected virtual void FixedUpdate()
     {
@@ -33,7 +42,17 @@ public class PlayerEntity : NetworkBehaviour
     private void Update()
     {
         if(!isLocalPlayer) return;
-        
+        if(Input.GetKeyDown(KeyCode.S))
+        {
+            
+            foreach(var player in NetworkServer.spawned.Values)
+            {
+                print(player.isOwned);
+            }
+        }
+        if(UltimateStatus < 100) HandleUltimate();
+
+
         Vector2 attackDirection = controller.InputWay == PlayerMovementController.InputMode.PC ? new Vector2(Input.mousePosition.x - Screen.width/2, Input.mousePosition.y - Screen.height/2) : UIHolder.AttackJoystick.Horizontal * Vector2.right + UIHolder.AttackJoystick.Vertical * Vector2.up;
 
         bool entryCondition = controller.InputWay == PlayerMovementController.InputMode.PC ? Input.GetKey(KeyCode.Mouse0) : true;
@@ -54,6 +73,26 @@ public class PlayerEntity : NetworkBehaviour
         }
         else timeSinceShootAction += Time.deltaTime;
     }
+    private void HandleUltimate()
+    {
+        UltimateStatus += Time.deltaTime * ultimateRestoreSpeed;
+        UIHolder.UltimateJoystick.SetJoystickFillAmount(UltimateStatus, UltimateTreshold);
+        if(UltimateStatus >= 100)
+        {
+            UIHolder.UltimateJoystick.SetJoystickType(isReady: true);
+        }
+    }
+    private void OnUltimateJoystickReleased()
+    {
+        if(ultimateStatus >= 100) UseUltimate();
+    }
+    private void UseUltimate()
+    {
+        ultimateStatus = 0;
+        currentChargeCount = 3;
+        FollowCanvas.SetChargeCount(currentChargeCount);
+        UIHolder.UltimateJoystick.SetJoystickType(isReady: false);
+    }
     private void ChargeRestoring()
     {
         if(currentChargeCount < maxChargeCount)
@@ -67,7 +106,6 @@ public class PlayerEntity : NetworkBehaviour
     }
     private void SetupLocalPlayer()
     {
-        SetCurrentHealthCmd(gameObject, MaxHealth);
         CmdSetNickname(gameObject, GameLevelController.Nicknames[Random.Range(0, GameLevelController.Nicknames.Length)]);
         
         
@@ -75,23 +113,27 @@ public class PlayerEntity : NetworkBehaviour
         UIHolder.Camera.FollowObject = transform;
         
         CmdSpawnCanvas(gameObject);
-        UIHolder.FollowCanvas = FollowCanvas;
     }
-    public void SetupLocalCanvases()
+    public void SetupLocalCanvas(bool isEnemy)
     {
-        if(!isLocalPlayer)
+        FollowCanvas.SetupCanvas(isEnemy: isEnemy);
+        
+        if(!isEnemy)
         {
-            FollowCanvas.SetupCanvas(isEnemy: true);
-        }
-        else 
-        {
-            FollowCanvas.SetupCanvas(isEnemy: false);
             FollowCanvas.ShowChargeCount();
+            UIHolder.FollowCanvas = FollowCanvas;
         }
+        
         FollowCanvas.SetNickname(Nickname);
+        SetCurrentHealthCmd(gameObject, MaxHealth);
     }
     [Command]
-    private void SetCurrentHealthCmd(GameObject player, int health) => player.GetComponent<PlayerEntity>().CurrentHealth = health;
+    private void SetCurrentHealthCmd(GameObject player, int health) 
+    {
+        PlayerEntity playerEntity = player.GetComponent<PlayerEntity>();
+        playerEntity.CurrentHealth = health;
+        playerEntity.FollowCanvas.RpcUpdateHealthBar(player, health, playerEntity.MaxHealth);
+    }
     [Command]
     private void CmdSetNickname(GameObject player, string nickname) => player.GetComponent<PlayerEntity>().Nickname = nickname;
     [Command]
@@ -116,10 +158,8 @@ public class PlayerEntity : NetworkBehaviour
     }
     public void Damage(int damage)
     {
-        if(CurrentHealth - damage <= 0) OnDie();
-        else CurrentHealth -= damage;
-        
-        FollowCanvas.CmdUpdateHealthbar(gameObject, CurrentHealth, MaxHealth);
+        SetCurrentHealthCmd(gameObject, CurrentHealth - damage);
+        if(CurrentHealth <= 0) OnDie();
     }
     public virtual void OnDie()
     {
@@ -129,7 +169,7 @@ public class PlayerEntity : NetworkBehaviour
     {
         SetCurrentHealthCmd(gameObject, MaxHealth);
         controller.enabled = false;
-        transform.position = new Vector3(Random.Range(-3.0f, 3.0f), 0.0f, Random.Range(-3.0f, 3.0f));
+        transform.position = new Vector3(Random.Range(-10.0f, 10.0f), 0.0f, Random.Range(-10.0f, 10.0f));
         controller.enabled = true;
     }
 }

@@ -7,10 +7,9 @@ public class FollowCanvas : NetworkBehaviour
     [SyncVar] public Transform FollowObject;
     [SerializeField] private Transform ElementsHolder;
     [SerializeField] private Text chargeCount;
-    public Image healthBar;
-    public Text healthText;
+    public HealthBar Healthbar;
     [SerializeField] private Text nickname;
-    private System.Collections.Generic.List<RectTransform> elements = new System.Collections.Generic.List<RectTransform>();
+    private PlayerEntity followObjectPlayer;
     private bool _IsEnemy;
     public void SetNickname(string name) => nickname.text = name;
     [Command]
@@ -18,15 +17,24 @@ public class FollowCanvas : NetworkBehaviour
     [ClientRpc]
     private void UpdatePlayersCanvases()
     {
-        PlayerEntity[] players = FindObjectsOfType<PlayerEntity>();
+        PlayerEntity[] players = GameLevelController.GetAllLevelPlayers();
         foreach(PlayerEntity player in players)
         {
-            player.SetupLocalCanvases();
+            if(player.isLocalPlayer) player.SetupLocalCanvas(false);
+            else player.SetupLocalCanvas(true);
         }
     }
     private void Start()
     {
+        followObjectPlayer = FollowObject.GetComponent<PlayerEntity>();
+        CmdSetClientAuthority(gameObject, followObjectPlayer.connectionToClient);
+        followObjectPlayer.FollowCanvas = this;
         OnCanvasCreated();
+    }
+    [Command]
+    private void CmdSetClientAuthority(GameObject canvas, NetworkConnectionToClient connection)
+    {
+        canvas.GetComponent<FollowCanvas>().netIdentity.AssignClientAuthority(connection);
     }
     private void Update()
     {
@@ -45,35 +53,19 @@ public class FollowCanvas : NetworkBehaviour
     public void SetupCanvas(bool isEnemy)
     {
         _IsEnemy = isEnemy;
-        if(_IsEnemy)
-        {
-            healthBar.color = Color.red;
-            nickname.color = Color.red;
-        }
-        else
-        {
-            healthBar.color = new Color(0.0f, 0.6f, 1.0f);
-            nickname.color = new Color(0.0f, 0.6f, 1.0f);
-        }
+        Healthbar.SetHealthBarColor(isEnemy);
+        nickname.color = isEnemy? Color.red : new Color(0.0f, 0.6f, 1.0f);
     }
-    [Command]
-    public void CmdUpdateHealthbar(GameObject player, int currentHealth, int maxHealth) => RpcUpdateHealthBar(player, currentHealth, maxHealth);
     [ClientRpc]
-    private void RpcUpdateHealthBar(GameObject player, int currentHealth, int maxHealth)
+    public void RpcUpdateHealthBar(GameObject player, int currentHealth, int maxHealth)
     {
-        FollowCanvas canvas = player.GetComponent<PlayerEntity>().FollowCanvas.GetComponent<FollowCanvas>();
-        canvas.healthBar.fillAmount = currentHealth/(float)maxHealth;
-        canvas.healthText.text = currentHealth.ToString();
+        FollowCanvas canvas = player.GetComponent<PlayerEntity>().FollowCanvas;
+        canvas.Healthbar.SetHealth(currentHealth, maxHealth);
     }
-    public void CommitRemovedElements()
-    {
-        for(int i = 0; i < elements.Count; i++) if(elements[i] == null) elements.RemoveAt(i);
-    }
-    public RectTransform PushElement(RectTransform element, bool shouldSpawnOntop)
+    public RectTransform PushElement(RectTransform element, int placeOrder)
     {
         element.SetParent(ElementsHolder);
-        if(shouldSpawnOntop) element.SetSiblingIndex(0);
-        elements.Add(element);
+        element.SetSiblingIndex(placeOrder);
         return element;
     }
 }

@@ -32,10 +32,9 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
     [SerializeField] protected RectTransform background = null;
     [SerializeField] private RectTransform handle = null;
     private RectTransform baseRect = null;
-
     private Canvas canvas;
     private Camera cam;
-
+    public System.Action OnJoystickUp;
     private Vector2 input = Vector2.zero;
 
     protected virtual void Start()
@@ -57,7 +56,6 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {
-        print("Drag begin");
         OnDrag(eventData);
     }
 
@@ -131,6 +129,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
     public virtual void OnPointerUp(PointerEventData eventData)
     {
         input = Vector2.zero;
+        OnJoystickUp?.Invoke();
         handle.anchoredPosition = Vector2.zero;
     }
 

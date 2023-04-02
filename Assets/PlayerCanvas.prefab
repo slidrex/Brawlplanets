@@ -138,7 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6928721, g: 1, b: 0.7127957, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -158,7 +158,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Fox5
+  m_Text: killer_laro
 --- !u!114 &3234041754724564892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,6 +184,7 @@ GameObject:
   - component: {fileID: 2722041147913288825}
   - component: {fileID: 1581754213827820122}
   - component: {fileID: 834707233036422954}
+  - component: {fileID: 4950587430516710651}
   m_Layer: 0
   m_Name: HealthBorder
   m_TagString: Untagged
@@ -250,6 +251,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4950587430516710651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 618909826175948081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e089c6d21ffe5d4ba037abece8ac7bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthText: {fileID: 115114927888842703}
+  healthValue: {fileID: 4751685118594318721}
 --- !u!1 &2184767630218913622
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,7 +323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.6, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -503,7 +518,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &8143284018688401444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -539,8 +554,7 @@ MonoBehaviour:
   FollowObject: {fileID: 0}
   ElementsHolder: {fileID: 3429722263545223832}
   chargeCount: {fileID: 3562062652375745418}
-  healthBar: {fileID: 4751685118594318721}
-  healthText: {fileID: 115114927888842703}
+  Healthbar: {fileID: 4950587430516710651}
   nickname: {fileID: 5117104307903375490}
 --- !u!114 &8088063312853394890
 MonoBehaviour:

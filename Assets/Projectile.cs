@@ -21,15 +21,20 @@ public class Projectile : NetworkBehaviour
     }
     protected virtual void OnTriggerEnter(Collider collider)
     {
-        print("collision!");
         if(collider.TryGetComponent<PlayerEntity>(out PlayerEntity entity))
         {
             if(entity.netId == Owner) return;
-            else
+            else if(entity.isOwned)
             {
                 entity.Damage(50);
             }
         }
+        StartCoroutine(pidr());
+    }
+    private System.Collections.IEnumerator pidr()
+    {
+        yield return new WaitForSeconds(0.2f);
+        int pidr;
         Destroy(gameObject);
     }
 }
