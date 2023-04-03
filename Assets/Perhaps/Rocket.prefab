@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 4466285693135321192}
   - component: {fileID: 606504817777790702}
   - component: {fileID: 8173194328686945805}
-  - component: {fileID: 7061608754208699736}
+  - component: {fileID: -5683421973477650314}
+  - component: {fileID: 2729281522467052474}
   m_Layer: 0
   m_Name: Rocket
   m_TagString: Untagged
@@ -43,7 +44,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2906543629521625955}
-  m_Mesh: {fileID: 5283261607579422976, guid: 3b55f297174ba3948be09948a2a7fef8, type: 3}
+  m_Mesh: {fileID: 1988216149656743765, guid: 3b55f297174ba3948be09948a2a7fef8, type: 3}
 --- !u!23 &3699393149615997622
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -100,8 +101,10 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
-  speed: 8
-  lifeTime: 3.5
+  speed: 20
+  lifeTime: 2
+  rb: {fileID: -5683421973477650314}
+  collisionEffect: {fileID: 1896180138236515532, guid: 71cc6d6cc4c7b354ca3e45d6c3fcc14f, type: 3}
   MoveVector: {x: 0, y: 0, z: 0}
   Owner: 0
 --- !u!114 &606504817777790702
@@ -149,8 +152,24 @@ MonoBehaviour:
   positionSensitivity: 0.01
   rotationSensitivity: 0.01
   scaleSensitivity: 0.01
---- !u!136 &7061608754208699736
-CapsuleCollider:
+--- !u!54 &-5683421973477650314
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2906543629521625955}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 116
+  m_CollisionDetection: 0
+--- !u!65 &2729281522467052474
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -159,7 +178,6 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.15
-  m_Height: 0.72
-  m_Direction: 2
-  m_Center: {x: 0.000000074505806, y: 0.008075945, z: -0.042072013}
+  serializedVersion: 2
+  m_Size: {x: 0.25, y: 0.25, z: 0.59999996}
+  m_Center: {x: 0.00000011920929, y: -0.00000013411045, z: -0.021428645}
