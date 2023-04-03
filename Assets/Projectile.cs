@@ -7,20 +7,24 @@ public class Projectile : NetworkBehaviour
     [SerializeField] private float lifeTime;
     [SyncVar, HideInInspector] public Vector3 MoveVector;
     [SyncVar, HideInInspector] public uint Owner;
+    [SerializeField] private Rigidbody rb;
+    [SerializeField] private GameObject collisionEffect;
     private Transform Transform;
     private float timeSinceSpawn;
     protected virtual void Start()
     {
         Transform = transform;
+        Transform.rotation = Quaternion.Euler(0, Mathf.Atan2(-MoveVector.x, -MoveVector.z) * Mathf.Rad2Deg, 0);
     }
     protected virtual void FixedUpdate()
     {
-        Transform.Translate(MoveVector * speed * Time.fixedDeltaTime);
+        rb.velocity = (MoveVector.normalized * speed);
         if(timeSinceSpawn <= lifeTime) timeSinceSpawn += Time.fixedDeltaTime;
         else Destroy(gameObject);
     }
     protected virtual void OnTriggerEnter(Collider collider)
     {
+        Destroy(Instantiate(collisionEffect, transform.position, Quaternion.identity), 1);
         if(collider.TryGetComponent<PlayerEntity>(out PlayerEntity entity))
         {
             if(entity.netId == Owner) return;
