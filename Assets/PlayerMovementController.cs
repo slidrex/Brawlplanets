@@ -21,6 +21,7 @@ public class PlayerMovementController : NetworkBehaviour
         MovementVector = InputWay == InputMode.PC ? new Vector3(Input.GetAxisRaw("Horizontal"), 0.0f, Input.GetAxisRaw("Vertical")) : new Vector3(entity.UIHolder.MovementJoystick.Horizontal, 0.0f, entity.UIHolder.MovementJoystick.Vertical);
         if(MovementVector != Vector3.zero)
         {
+            Vector2.ClampMagnitude(MovementVector, 0.5f);
             controller.Move(MovementVector * MovementSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(-MovementVector), Time.deltaTime * 10);
         }

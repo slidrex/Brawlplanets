@@ -666,7 +666,7 @@ MonoBehaviour:
   animator: {fileID: 909623711027179847}
   controller: {fileID: 8810099588691146548}
   entity: {fileID: -890444977418270836}
-  MovementSpeed: 3.6
+  MovementSpeed: 2.9
 --- !u!143 &8810099588691146548
 CharacterController:
   m_ObjectHideFlags: 0
@@ -710,6 +710,7 @@ MonoBehaviour:
   chargeRestoreTime: 0.7
   chargePenaltyTime: 0.4
   Nickname: 
+  ultimateRestoreSpeed: 5
   <MaxHealth>k__BackingField: 400
   <CurrentHealth>k__BackingField: 0
 --- !u!95 &909623711027179847
@@ -855,15 +856,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3367482804872464599, guid: ac8c0b779df031b49b073f097bbb2892, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.005
+      value: 0.015
       objectReference: {fileID: 0}
     - target: {fileID: 3367482804872464599, guid: ac8c0b779df031b49b073f097bbb2892, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.005
+      value: 0.015
       objectReference: {fileID: 0}
     - target: {fileID: 3367482804872464599, guid: ac8c0b779df031b49b073f097bbb2892, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.005
+      value: 0.015
       objectReference: {fileID: 0}
     - target: {fileID: 3367482804872464599, guid: ac8c0b779df031b49b073f097bbb2892, type: 3}
       propertyPath: m_LocalPosition.x

@@ -53,7 +53,7 @@ public class PlayerEntity : NetworkBehaviour
         if(UltimateStatus < 100) HandleUltimate();
 
 
-        Vector2 attackDirection = controller.InputWay == PlayerMovementController.InputMode.PC ? new Vector2(Input.mousePosition.x - Screen.width/2, Input.mousePosition.y - Screen.height/2) : UIHolder.AttackJoystick.Horizontal * Vector2.right + UIHolder.AttackJoystick.Vertical * Vector2.up;
+        Vector2 attackDirection = controller.InputWay == PlayerMovementController.InputMode.PC ? GetPointAttackVector() : UIHolder.AttackJoystick.Horizontal * Vector2.right + UIHolder.AttackJoystick.Vertical * Vector2.up;
 
         bool entryCondition = controller.InputWay == PlayerMovementController.InputMode.PC ? Input.GetKey(KeyCode.Mouse0) : true;
         
@@ -72,6 +72,23 @@ public class PlayerEntity : NetworkBehaviour
             ChargeRestoring();
         }
         else timeSinceShootAction += Time.deltaTime;
+    }
+    private Vector2 GetPointAttackVector()
+    {
+        Ray ray = UIHolder.Camera.RenderCamera.ScreenPointToRay(Input.mousePosition);
+        
+        Vector3 rayOriginPosition = ray.origin;
+        Vector3 rayEndPosition = rayOriginPosition;
+        
+        Vector3 delta = ray.direction;
+        float dCount = (transform.position.y - rayEndPosition.y)/delta.y;
+        dCount = Mathf.Abs(dCount);
+        rayEndPosition += delta * dCount;
+
+        Vector3 distance = rayEndPosition - transform.position;
+        
+        distance.y = distance.z;
+        return distance;
     }
     private void HandleUltimate()
     {

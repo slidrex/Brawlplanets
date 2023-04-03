@@ -38,7 +38,7 @@ public class Projectile : NetworkBehaviour
     private System.Collections.IEnumerator pidr()
     {
         yield return new WaitForSeconds(0.2f);
-        int pidr;
         Destroy(gameObject);
+        int pidr;
     }
 }

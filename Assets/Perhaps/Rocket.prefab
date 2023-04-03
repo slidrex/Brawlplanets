@@ -32,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 2906543629521625955}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -103,10 +103,10 @@ MonoBehaviour:
   syncInterval: 0.1
   speed: 20
   lifeTime: 2
-  rb: {fileID: -5683421973477650314}
-  collisionEffect: {fileID: 1896180138236515532, guid: 71cc6d6cc4c7b354ca3e45d6c3fcc14f, type: 3}
   MoveVector: {x: 0, y: 0, z: 0}
   Owner: 0
+  rb: {fileID: -5683421973477650314}
+  collisionEffect: {fileID: 1896180138236515532, guid: 71cc6d6cc4c7b354ca3e45d6c3fcc14f, type: 3}
 --- !u!114 &606504817777790702
 MonoBehaviour:
   m_ObjectHideFlags: 0
