@@ -17,13 +17,21 @@ public static class GameLevelController
         "sobaka_povodir",
         "kolchan_s_govnov",
         "govno_govna",
-        "pirozhok_s_govnom"
+        "pirozhok_s_govnom",
+        "gonduras",
+        "math_lier",
+        "gleb",
+        "rodion raskolnikov",
+        "lomatel_surikat",
+        "Subordinacia228"
     };
     public static PlayerEntity[] GetAllLevelPlayers() => MonoBehaviour.FindObjectsOfType<PlayerEntity>();
-    [Command]
-    public static void ReloadScene()
+    public static GameObject GetObjectWithAuthority()
     {
-        PlayerEntity[] players = GetAllLevelPlayers();
-        foreach(PlayerEntity player in players) player.OnGameLoad();
+        foreach(var player in NetworkServer.spawned.Values)
+        {
+            if(player.isOwned) return player.gameObject;
+        }
+        return null;
     }
 }

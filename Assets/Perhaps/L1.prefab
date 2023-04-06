@@ -515,7 +515,7 @@ GameObject:
   - component: {fileID: 909623711027179847}
   - component: {fileID: 1829126833666969519}
   - component: {fileID: 4172664225203591126}
-  - component: {fileID: -1926605519993603098}
+  - component: {fileID: -6266597704458330737}
   m_Layer: 0
   m_Name: L1
   m_TagString: Untagged
@@ -712,7 +712,7 @@ MonoBehaviour:
   Nickname: 
   ultimateRestoreSpeed: 5
   <MaxHealth>k__BackingField: 400
-  <CurrentHealth>k__BackingField: 0
+  CurrentHealth: 0
 --- !u!95 &909623711027179847
 Animator:
   serializedVersion: 3
@@ -765,7 +765,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!65 &-1926605519993603098
+--- !u!65 &-6266597704458330737
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -776,8 +776,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.6, y: 2.6429396, z: 0.42963383}
-  m_Center: {x: 0, y: 0.62, z: -0.05284424}
+  m_Size: {x: 1.3551271, y: 2.6429396, z: 1.240574}
+  m_Center: {x: -0.05672127, y: 0.6530912, z: 0.06451383}
 --- !u!1 &7282003901588107450
 GameObject:
   m_ObjectHideFlags: 0

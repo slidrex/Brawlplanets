@@ -23,15 +23,11 @@ public class PlayerEntity : NetworkBehaviour
     private const float UltimateTreshold = 100.0f;
     [SerializeField] private float ultimateRestoreSpeed;
     [field:SerializeField, SyncVar] public int MaxHealth { get; private set; }
-    [field:SerializeField, SyncVar] public int CurrentHealth { get; private set; }
+    [SyncVar(hook = nameof(ChangeHealthCallback))] public int CurrentHealth;
     public override void OnStartLocalPlayer()
     {
         SetupLocalPlayer();
         UIHolder.UltimateJoystick.OnUltimateRelease += OnUltimateJoystickReleased;
-    }
-    private void Start()
-    {
-        print("start");
     }
     protected virtual void FixedUpdate()
     {
@@ -42,14 +38,7 @@ public class PlayerEntity : NetworkBehaviour
     private void Update()
     {
         if(!isLocalPlayer) return;
-        if(Input.GetKeyDown(KeyCode.S))
-        {
-            
-            foreach(var player in NetworkServer.spawned.Values)
-            {
-                print(player.isOwned);
-            }
-        }
+
         if(UltimateStatus < 100) HandleUltimate();
 
 
@@ -125,11 +114,21 @@ public class PlayerEntity : NetworkBehaviour
     {
         CmdSetNickname(gameObject, GameLevelController.Nicknames[Random.Range(0, GameLevelController.Nicknames.Length)]);
         
-        
         UIHolder = Instantiate(holder, Vector3.zero, Quaternion.Euler(20.0f, 0.0f, 0.0f));
         UIHolder.Camera.FollowObject = transform;
         
         CmdSpawnCanvas(gameObject);
+    }
+    [Command]
+    private void CmdSetNickname(GameObject player, string nickname) => player.GetComponent<PlayerEntity>().Nickname = nickname;
+    [Command]
+    private void CmdSpawnCanvas(GameObject player) 
+    {
+        FollowCanvas obj = Instantiate(followCanvas);
+        
+        obj.FollowTransform = player.transform;
+
+        NetworkServer.Spawn(obj.gameObject, player.GetComponent<NetworkIdentity>().connectionToClient);
     }
     public void SetupLocalCanvas(bool isEnemy)
     {
@@ -142,26 +141,7 @@ public class PlayerEntity : NetworkBehaviour
         }
         
         FollowCanvas.SetNickname(Nickname);
-        SetCurrentHealthCmd(gameObject, MaxHealth);
-    }
-    [Command]
-    private void SetCurrentHealthCmd(GameObject player, int health) 
-    {
-        PlayerEntity playerEntity = player.GetComponent<PlayerEntity>();
-        playerEntity.CurrentHealth = health;
-        playerEntity.FollowCanvas.RpcUpdateHealthBar(player, health, playerEntity.MaxHealth);
-    }
-    [Command]
-    private void CmdSetNickname(GameObject player, string nickname) => player.GetComponent<PlayerEntity>().Nickname = nickname;
-    [Command]
-    private void CmdSpawnCanvas(GameObject playerObject) 
-    {
-        FollowCanvas obj = Instantiate(followCanvas.gameObject).GetComponent<FollowCanvas>();
-        PlayerEntity player = playerObject.GetComponent<PlayerEntity>();
-
-        obj.FollowObject = playerObject.transform;
-        
-        NetworkServer.Spawn(obj.gameObject, gameObject);
+        if(isOwned) CmdSetHealth(netId, MaxHealth);
     }
     [Command]
     private void CmdSpawnBullet(Vector3 spawnPosition, uint ownerNetId, Vector2 moveVector)
@@ -171,22 +151,43 @@ public class PlayerEntity : NetworkBehaviour
         
 
         proj.MoveVector = new Vector3(moveVector.x, 0.0f, moveVector.y);
-        NetworkServer.Spawn(proj.gameObject);
+        NetworkServer.Spawn(proj.gameObject, NetworkServer.spawned[ownerNetId].connectionToClient);
+    }
+    private void ChangeHealthCallback(int oldHealth, int newHealth)
+    {
+        if(CurrentHealth <= 0 && isOwned) ReloadScene();
+        FollowCanvas.RpcUpdateHealthBar(gameObject, CurrentHealth, MaxHealth);
     }
     public void Damage(int damage)
     {
-        SetCurrentHealthCmd(gameObject, CurrentHealth - damage);
-        if(CurrentHealth <= 0) OnDie();
+        CurrentHealth -= damage;
+    }
+    [Command]
+    private void CmdSetHealth(uint netId, int health)
+    {
+        PlayerEntity player = NetworkServer.spawned[netId].GetComponent<PlayerEntity>();
+        player.CurrentHealth = health;
     }
     public virtual void OnDie()
     {
-        GameLevelController.ReloadScene();
+        if(isOwned || isServer)
+            ReloadScene();
     }
-    public void OnGameLoad()
+    [Command]
+    private void ReloadScene()
     {
-        SetCurrentHealthCmd(gameObject, MaxHealth);
-        controller.enabled = false;
-        transform.position = new Vector3(Random.Range(-10.0f, 10.0f), 0.0f, Random.Range(-10.0f, 10.0f));
-        controller.enabled = true;
+        PlayerEntity[] players = GameLevelController.GetAllLevelPlayers();
+        foreach(PlayerEntity player in players) 
+        {
+            player.CurrentHealth = player.MaxHealth;
+            player.controller.enabled = false;
+            player.transform.position = new Vector3(Random.Range(-10.0f, 10.0f), 0.0f, Random.Range(-10.0f, 10.0f));
+            player.controller.enabled = true;
+            player.OnGameReload();
+        }
+    }
+    public void OnGameReload()
+    {
+        
     }
 }

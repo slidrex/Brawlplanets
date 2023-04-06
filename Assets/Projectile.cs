@@ -24,21 +24,18 @@ public class Projectile : NetworkBehaviour
     }
     protected virtual void OnTriggerEnter(Collider collider)
     {
-        Destroy(Instantiate(collisionEffect, transform.position, Quaternion.identity), 1);
+        if(!isOwned) return;
         if(collider.TryGetComponent<PlayerEntity>(out PlayerEntity entity))
         {
             if(entity.netId == Owner) return;
-            else if(entity.isOwned)
-            {
-                entity.Damage(50);
-            }
+            CmdHit(entity.netId, 50);
         }
-        StartCoroutine(pidr());
+        Destroy(Instantiate(collisionEffect, transform.position, Quaternion.identity), 1);
+        NetworkServer.Destroy(gameObject);
     }
-    private System.Collections.IEnumerator pidr()
+    [Command]
+    private void CmdHit(uint playerNetId, int damage)
     {
-        yield return new WaitForSeconds(0.2f);
-        Destroy(gameObject);
-        int pidr;
+        NetworkServer.spawned[playerNetId].gameObject.GetComponent<PlayerEntity>().Damage(damage);
     }
 }
