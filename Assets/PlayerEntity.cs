@@ -12,6 +12,7 @@ public class PlayerEntity : NetworkBehaviour
     [SerializeField] private float projectileInterval = 0.3f;
     [SerializeField] private int maxChargeCount;
     [SerializeField] private float chargeRestoreTime;
+    [SerializeField] private Animator _animator;
     private float timeSinceChargeRestored;
     private int currentChargeCount;
     private float timeSinceProjectile;
@@ -48,6 +49,7 @@ public class PlayerEntity : NetworkBehaviour
         
         if(entryCondition && attackDirection != Vector2.zero && timeSinceProjectile >= projectileInterval && currentChargeCount > 0)
         {
+            _animator.SetTrigger("Attack");
             timeSinceProjectile = 0.0f;
             attackDirection.Normalize();
             currentChargeCount--;
