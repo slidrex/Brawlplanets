@@ -46,7 +46,7 @@ public class FollowCanvas : NetworkBehaviour
     {
         chargeCount.gameObject.SetActive(true);
     }
-    public void SetChargeCount(int count)
+    public void SetChargeCount(uint count)
     {
         chargeCount.text = count.ToString();
     }
