@@ -1,20 +1,8 @@
 fileFormatVersion: 2
-guid: 0e3d8ce4961caa044ae44f24219e2c92
+guid: 77ee61750d1551b4facbf12386219308
 ModelImporter:
   serializedVersion: 20200
-  internalIDToNameTable:
-  - first:
-      74: -6130150063986897262
-    second: "\u0410\u0440\u043C\u0430\u0442\u0443\u0440\u0430|Attack"
-  - first:
-      74: 340687121774425811
-    second: "\u0410\u0440\u043C\u0430\u0442\u0443\u0440\u0430|Idle"
-  - first:
-      74: 7430661667052829594
-    second: "\u0410\u0440\u043C\u0430\u0442\u0443\u0440\u0430|Nothing"
-  - first:
-      74: -1087898938911880601
-    second: "\u0410\u0440\u043C\u0430\u0442\u0443\u0440\u0430|Walk"
+  internalIDToNameTable: []
   externalObjects:
   - first:
       type: UnityEngine:Material
